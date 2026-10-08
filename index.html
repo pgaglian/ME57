@@ -3423,13 +3423,13 @@ box-shadow:0 4px 10px rgba(0,0,0,0.3);
             🎬 Mis Plataformas
         </h3>
 
-        <div id="PlataformasCineSeleccionadas"
-             style="
-             display:grid;
-             grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-             gap:12px;
-             ">
-        </div>
+<div id="PlataformasCineSeleccionadas"
+     style="
+     display:grid;
+     grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+     gap:12px;
+     ">
+</div>
 
     </div>
 
@@ -3490,11 +3490,13 @@ box-shadow:0 4px 10px rgba(0,0,0,0.3);
         <div id="configuracionCine"
              style="
              display:grid;
-             grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            position:relative;
+            grid-template-columns:1fr;
              gap:10px;
              max-height:35vh;
              overflow-y:auto;
              padding-right:5px;
+
              ">
         </div>
 
@@ -3511,9 +3513,10 @@ box-shadow:0 4px 10px rgba(0,0,0,0.3);
         <div id="plataformasCinePersonalizadasConfiguracion"
              style="
              display:grid;
+             position:relative;
              grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
              gap:10px;
-             max-height:35vh;
+             max-height:120px;
              overflow-y:auto;
              padding-right:5px;
              ">
@@ -3737,6 +3740,97 @@ y la revisamos. 🛠️🔧
     </div>
 
 </div>
+
+
+<!-- ===== POPUP INGRESAR LINK PLATAFORMA CINE ===== -->
+
+<div id="popupLinkPlataformaCine"
+     style="
+     display:none;
+     position:fixed;
+     inset:0;
+     background:rgba(0,0,0,.75);
+     z-index:1300;
+     align-items:center;
+     justify-content:center;
+     padding:20px;
+     ">
+
+    <div style="
+        width:min(92%,450px);
+        background:#1d1d1d;
+        border:1px solid #555;
+        border-radius:20px;
+        padding:20px;
+        box-shadow:0 10px 35px rgba(0,0,0,.7);
+        ">
+
+        <h2 style="
+            margin-top:0;
+            text-align:center;
+            color:#FFD700;
+        ">
+            🔗 Ingresar enlace
+        </h2>
+
+        <p style="
+            text-align:center;
+            color:#ccc;
+            line-height:1.5;
+        ">
+            Pegá aquí el enlace de la plataforma
+            que copiaste del navegador.
+        </p>
+
+        <input
+            id="urlAgregarPlataformaCine"
+            type="url"
+            placeholder="https://..."
+            style="
+            width:100%;
+            box-sizing:border-box;
+            padding:12px;
+            font-size:16px;
+            border-radius:10px;
+            border:1px solid #666;
+            margin-bottom:15px;
+            ">
+
+        <button
+            type="button"
+            onclick="guardarLinkPlataformaCine()"
+            style="
+            display:block;
+            width:100%;
+            margin:8px 0;
+            padding:12px;
+            font-size:16px;
+            font-weight:bold;
+            border-radius:10px;
+            ">
+            ✅ Guardar enlace
+        </button>
+
+        <button
+            type="button"
+            onclick="cerrarLinkPlataformaCine()"
+            style="
+            display:block;
+            width:100%;
+            margin:8px 0;
+            padding:12px;
+            font-size:16px;
+            font-weight:bold;
+            border-radius:10px;
+            ">
+            ↩️ Cancelar
+        </button>
+
+    </div>
+
+</div>
+
+<!-- ===== FIN POPUP INGRESAR LINK ===== -->
 
 <!-- ===== POPUP CONFIRMAR PLATAFORMA CINE ===== -->
 
@@ -6490,7 +6584,7 @@ const Libros=[
 // MODIFICAR ÚNICAMENTE ESTA SECCIÓN AL INSTALAR EL SISTEMA
 //=========================================================
 
-const nombre = " 🟨🟦 Ariel Amigazo!! 🏟️🧉";
+const nombre = "🟨🟦 Ariel Amigazo!! 🏟️🧉";
 
 const usuario = "ME57";
 
@@ -10079,13 +10173,21 @@ function cargarConfiguracionCine(){
     configuracionCine.forEach(
         function(plataforma){
 
-            const label =
-                document.createElement("label");
+            const fila =
+    document.createElement("div");
 
-            label.style.display = "flex";
-            label.style.alignItems = "center";
-            label.style.gap = "8px";
-            label.style.cursor = "pointer";
+fila.className = "itemConfiguracionCine";
+
+fila.style.display = "flex";
+fila.style.justifyContent = "flex-start";
+fila.style.alignItems = "center";
+fila.style.gap = "10px";
+fila.style.padding = "10px";
+fila.style.margin = "8px 0";
+fila.style.background = "#333";
+fila.style.borderRadius = "10px";
+
+
 
             const checkbox =
                 document.createElement("input");
@@ -10107,7 +10209,7 @@ checkbox.checked =
         plataforma.id
     );
 
-label.appendChild(checkbox);
+fila.appendChild(checkbox);
 
            if(plataforma.logo){
 
@@ -10130,10 +10232,10 @@ label.appendChild(checkbox);
 
                 imagen.src = url;
 
-                label.insertBefore(
-                    imagen,
-                    label.lastChild
-                );
+          fila.insertBefore(
+          imagen,
+          fila.lastChild
+);
 
             }
 
@@ -10146,20 +10248,47 @@ label.appendChild(checkbox);
 
                 respaldo.textContent = "🎬";
 
-                label.appendChild(respaldo);
+                fila.appendChild(respaldo);
 
             }
 
-            label.appendChild(
-                document.createTextNode(
-                    plataforma.nombre
-                )
-            );
+           fila.appendChild(
+    document.createTextNode(
+        plataforma.nombre
+    )
+);
 
-            contenedor.appendChild(label);
+           contenedor.appendChild(fila);
 
         }
     );
+
+// INDICADOR DE SCROLL - MÁS UTILIZADAS
+const indicadorScrollOficial =
+    document.createElement("div");
+
+indicadorScrollOficial.textContent = "👇";
+
+indicadorScrollOficial.style.position = "absolute";
+indicadorScrollOficial.style.bottom = "2px";
+indicadorScrollOficial.style.left = "50%";
+indicadorScrollOficial.style.transform =
+    "translateX(-50%)";
+indicadorScrollOficial.style.fontSize = "22px";
+indicadorScrollOficial.style.pointerEvents = "none";
+indicadorScrollOficial.style.display = "none";
+
+if(
+    contenedor.scrollHeight >
+    contenedor.clientHeight
+){
+    indicadorScrollOficial.style.display = "block";
+}
+
+contenedor.appendChild(
+    indicadorScrollOficial
+);
+
 
 // ========================
 // MOSTRAR PLATAFORMAS PERSONALIZADAS
@@ -10223,9 +10352,7 @@ personalizadas.forEach(
                 plataforma.nombre
             );
 
-        label.appendChild(
-            checkbox
-        );
+      fila.appendChild(checkbox);
 
         const icono =
             document.createElement("span");
@@ -10277,8 +10404,54 @@ personalizadas.forEach(
        }
     );
 
+// INDICADOR DE SCROLL
+const indicadorScroll =
+    document.createElement("div");
+
+indicadorScroll.textContent = "➕";
+
+indicadorScroll.style.position = "absolute";
+indicadorScroll.style.bottom = "2px";
+indicadorScroll.style.left = "50%";
+indicadorScroll.style.transform =
+    "translateX(-50%)";
+indicadorScroll.style.fontSize = "22px";
+indicadorScroll.style.pointerEvents = "none";
+indicadorScroll.style.display = "none";
+
+if(
+    contenedorPersonalizadas.scrollHeight >
+    contenedorPersonalizadas.clientHeight
+){
+    indicadorScroll.style.display = "block";
 }
 
+contenedorPersonalizadas.appendChild(
+    indicadorScroll
+);
+
+contenedorPersonalizadas.addEventListener(
+    "scroll",
+    function(){
+
+        const llegoAlFinal =
+            contenedorPersonalizadas.scrollTop +
+            contenedorPersonalizadas.clientHeight >=
+            contenedorPersonalizadas.scrollHeight - 2;
+
+        if(llegoAlFinal){
+            indicadorScroll.style.display = "none";
+        }else if(
+            contenedorPersonalizadas.scrollHeight >
+            contenedorPersonalizadas.clientHeight
+        ){
+            indicadorScroll.style.display = "block";
+        }
+
+    }
+);
+
+}
 
 function eliminarPlataformaCinePersonalizada(nombre){
 
@@ -11458,6 +11631,8 @@ function abrirConfiguracionBilleteras(){
 // CONFIGURACION CINE
 // ========================
 
+let sortableConfiguracionCine = null;
+
 function abrirConfiguracionCine(){
 
     const popup =
@@ -11607,6 +11782,152 @@ localStorage.setItem(
 
 
 // ========================
+// POPUP INGRESAR LINK PLATAFORMA CINE
+// ========================
+
+function abrirLinkPlataformaCine(){
+
+    const popup =
+        document.getElementById(
+            "popupLinkPlataformaCine"
+        );
+
+    if(!popup){
+        return;
+    }
+
+    const campo =
+        document.getElementById(
+            "urlAgregarPlataformaCine"
+        );
+
+    if(campo){
+        campo.value = "";
+    }
+
+    popup.style.display = "flex";
+
+}
+
+function cerrarLinkPlataformaCine(){
+
+    const popup =
+        document.getElementById(
+            "popupLinkPlataformaCine"
+        );
+
+    if(!popup){
+        return;
+    }
+
+    popup.style.display = "none";
+
+}
+
+function guardarLinkPlataformaCine(){
+
+    const campoUrl =
+        document.getElementById(
+            "urlAgregarPlataformaCine"
+        );
+
+    if(!campoUrl){
+        return;
+    }
+
+    const url =
+        campoUrl.value.trim();
+
+    if(!url){
+        return;
+    }
+
+    const nombre =
+        localStorage.getItem(
+            "nombrePlataformaCinePendiente"
+        ) || "";
+
+    if(!nombre){
+        return;
+    }
+
+    const guardadas =
+        JSON.parse(
+            localStorage.getItem(
+                "PlataformasCinePersonalizadas"
+            )
+        ) || [];
+
+    const existe =
+        guardadas.some(function(plataforma){
+
+            return plataforma.nombre.toLowerCase() ===
+                   nombre.toLowerCase();
+
+        });
+
+    if(existe){
+        return;
+    }
+
+    guardadas.push({
+
+        nombre: nombre,
+        url: url
+
+    });
+
+    localStorage.setItem(
+        "PlataformasCinePersonalizadas",
+        JSON.stringify(guardadas)
+    );
+
+    cargarConfiguracionCine();
+
+    mostrarPlataformasCineSeleccionadas();
+
+
+    localStorage.removeItem(
+        "validacionPlataformaCineActiva"
+    );
+
+    localStorage.removeItem(
+        "nombrePlataformaCinePendiente"
+    );
+
+    localStorage.removeItem(
+        "appCompartidaTitulo"
+    );
+
+    localStorage.removeItem(
+        "appCompartidaTexto"
+    );
+
+    localStorage.removeItem(
+        "appCompartidaUrl"
+    );
+
+    campoUrl.value = "";
+
+    const urlLimpia =
+        window.location.pathname +
+        window.location.hash;
+
+    window.history.replaceState(
+        {},
+        document.title,
+        urlLimpia
+    );
+
+    cerrarLinkPlataformaCine();
+
+    cerrarAgregarPlataformaCine();
+
+    abrirConfiguracionCine();
+
+}
+
+// ========================
 // VALIDAR NUEVA PLATAFORMA CINE
 // ========================
 
@@ -11628,20 +11949,38 @@ function validarNuevaPlataformaCine(){
         return;
     }
 
-   localStorage.setItem(
-    "nombrePlataformaCinePendiente",
-    nombre
-);
+    localStorage.setItem(
+        "nombrePlataformaCinePendiente",
+        nombre
+    );
 
-localStorage.setItem(
-    "validacionPlataformaCineActiva",
-    "true"
-);
+    localStorage.setItem(
+        "validacionPlataformaCineActiva",
+        "true"
+    );
 
-const url =
-        "https://play.google.com/store/search?q=" +
-        encodeURIComponent(nombre) +
-        "&c=apps";
+    let url;
+
+    if(esAndroid){
+
+        url =
+            "https://play.google.com/store/search?q=" +
+            encodeURIComponent(nombre) +
+            "&c=apps";
+
+    }else if(esAppleMobile){
+
+        url =
+            "https://apps.apple.com/us/search?term=" +
+            encodeURIComponent(nombre);
+
+    }else{
+
+        url =
+            "https://www.google.com/search?q=" +
+            encodeURIComponent(nombre);
+
+    }
 
     window.open(
         url,
@@ -11681,6 +12020,14 @@ document.addEventListener(
         ){
             return;
         }
+
+if(!esMovil){
+
+    abrirLinkPlataformaCine();
+
+    return;
+
+}
 
         const popup =
     document.getElementById(
@@ -11937,6 +12284,61 @@ function abrirAgregarPlataformaCine(){
     }
 
     popup.style.display = "flex";
+
+    const textoAgregarPlataforma =
+        document.querySelector(
+            "#popupAgregarPlataformaCine p"
+        );
+
+    if(textoAgregarPlataforma){
+
+        if(!esMovil){
+
+            textoAgregarPlataforma.innerHTML =
+                "✏️ <strong>Escribí el nombre exacto de la aplicación</strong>" +
+                " tal como aparece en tu dispositivo." +
+                "<br><br>" +
+
+                "⚠️ Vas a salir de Mi Espacio para comprobar la aplicación." +
+                "<br><br>" +
+
+                "🖥️ <strong>En PC:</strong> cuando encuentres la página correcta," +
+                " copiá el enlace de la barra de direcciones." +
+                "<br><br>" +
+
+                "↩️ Después volvé a Mi Espacio y pegá el enlace cuando te lo solicitemos." +
+                "<br><br>" +
+
+                "❗ <strong>Si no copiás el enlace, no podremos guardar la plataforma.</strong>";
+
+        }else{
+
+            textoAgregarPlataforma.innerHTML =
+                "✏️ <strong>Escribí el nombre exacto de la aplicación</strong>" +
+                " tal como aparece en tu dispositivo." +
+                "<br><br>" +
+
+                "⚠️ Vas a salir de Mi Espacio para comprobar" +
+                " la aplicación en Google Play o App Store y poder compartirla con Mi Espacio." +
+                "<br><br>" +
+
+                "📖 <strong>¿No sabés cómo compartirla?</strong>" +
+                "<br>" +
+                "👉 <button type='button' onclick='abrirInstructivoCompartirApp()' " +
+                "style='border:none;background:none;color:#FFD700;font-size:16px;font-weight:bold;cursor:pointer;padding:0;'>" +
+                "Ver instructivo</button>" +
+                "<br><br>" +
+
+                "↩️ <strong>Después volvé a Mi Espacio para confirmar.</strong>" +
+                "<br><br>" +
+
+                "❗ <strong>Si no volvés a Mi Espacio, la aplicación no se guardará.</strong>" +
+                "<br><br>" +
+
+                "🔐 <strong>Esta comprobación se hace una sola vez.</strong>";
+        }
+
+    }
 
     const nombreRecibido =
         localStorage.getItem(
@@ -13669,10 +14071,14 @@ document.body.appendChild(
 
 /* FUNCIONES DE LOS BOTONES */
 
+
 btnMiniPlay.onclick =
     function(){
 
         btnPlayPause.click();
+
+        btnMiniPlay.innerHTML =
+            audioNuevo.paused ? "▶" : "❚❚";
 
     };
 
@@ -13841,6 +14247,9 @@ botonMinimizar.onclick =
 
             barraMini.style.display =
                 "flex";
+
+     	    btnMiniPlay.innerHTML =
+    	    audioNuevo.paused ? "▶" : "❚❚";
 
         }else{
 
@@ -14694,6 +15103,73 @@ if(tipoRadio.includes("AM")){
     let animacionVU =
         null;
 
+function moverMiniVU(){
+
+    if(
+        audioNuevo.paused ||
+        audioNuevo.ended ||
+        audioNuevo.__radioCerrada
+    ){
+
+        barrasMiniVU.forEach(
+            function(barra){
+
+                barra.style.opacity =
+                    "0.35";
+
+                barra.style.height =
+                    "5px";
+
+            }
+        );
+
+        return;
+
+    }
+
+    analizadorAudio.getByteFrequencyData(
+        datosVU
+    );
+
+        barrasMiniVU.forEach(
+            function(barra,index){
+
+                const nivel =
+                    datosVU[
+                        Math.min(
+                            datosVU.length - 1,
+                            Math.floor(
+                                index *
+                                (datosVU.length * 0.65) /
+                                (barrasMiniVU.length - 1)
+                            )
+                        )
+                    ] / 255;
+
+                const altura =
+                    Math.max(
+                        0.15,
+                        nivel
+                    );
+
+                barra.style.height =
+                    (altura * 24) + "px";
+
+                barra.style.opacity =
+                    Math.max(
+                        0.45,
+                        altura
+                    );
+
+            }
+        );
+
+        requestAnimationFrame(
+            moverMiniVU
+        );
+
+}
+
 function moverVU(){
 
     if(
@@ -14778,24 +15254,25 @@ barra.style.opacity =
 
 }
 
-    audioNuevo.addEventListener(
-        "play",
-        function(){
+audioNuevo.addEventListener(
+    "play",
+    function(){
 
-            btnPlayPause.innerHTML =
-                "❚❚";
+        btnPlayPause.innerHTML =
+            "❚❚";
 
+        if(
+            animacionVU === null
+        ){
 
-            if(
-                animacionVU === null
-            ){
-
-                moverVU();
-
-            }
+            moverVU();
 
         }
-    );
+
+        moverMiniVU();
+
+    }
+);
 
 
     audioNuevo.addEventListener(
@@ -15159,6 +15636,9 @@ function mostrarPlataformasCineSeleccionadas(){
 
         tarjeta.className = "card";
 
+	tarjeta.dataset.id =
+    	"oficial-" + datosPlataforma.id;
+
         tarjeta.style.padding = "12px";
         tarjeta.style.borderRadius = "16px";
 
@@ -15280,6 +15760,9 @@ personalizadas.forEach(function(plataforma){
 
         tarjeta.className = "card";
 
+	tarjeta.dataset.id =
+        "personalizada-" + plataforma.nombre;
+
         tarjeta.style.padding = "12px";
         tarjeta.style.borderRadius = "16px";
 
@@ -15340,10 +15823,7 @@ personalizadas.forEach(function(plataforma){
 
     });
 
-
-
 }
-
 
 
 // ========================
@@ -21136,12 +21616,14 @@ window.addEventListener("popstate", function(event){
 
     }
 
-    if(event.state && event.state.pantalla === "ambientes"){
+  if(event.state && event.state.pantalla === "ambientes"){
 
-        mostrarMenuAndroid("ambientes", false);
-        return;
+    document.getElementById("Cine").style.display="none";
 
-    }
+    mostrarMenuAndroid("ambientes", false);
+    return;
+
+}
 
     if(event.state && event.state.pantalla === "Entrenamiento"){
 
@@ -21267,6 +21749,27 @@ if(campo && titulo){
 }
 
 recibirAppCompartida();
+
+
+/* =====================================================
+   CERRAR RADIO AL SALIR DE LA APLICACIÓN
+   ===================================================== */
+
+window.addEventListener(
+    "pagehide",
+    function(){
+
+        if(
+            reproductorRadio &&
+            typeof botonCerrar !== "undefined"
+        ){
+
+            botonCerrar.click();
+
+        }
+
+    }
+);
 
 </script>
 
